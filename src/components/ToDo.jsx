@@ -1,39 +1,23 @@
 import { useState, useEffect } from "react";
 import "../index.css";
-import dayjs from "dayjs";
 
 function ToDo({ selectedDate }) {
   const [userTask, setUserTask] = useState("");
   const [taskMap, setTaskMap] = useState(
     new Map(JSON.parse(localStorage.getItem("taskmap")))
   );
-    const [todayDate, setTodayDate] = useState(selectedDate)
+  const [todayDate, setTodayDate] = useState(selectedDate);
   useEffect(() => {
+    taskMap.get(selectedDate.format("DD MMMM YYYY")) === undefined &&
+      setTaskMap((map) => {
+        return new Map(map.set(selectedDate.format("DD MMMM YYYY"), []));
+      });
 
-    // ((taskMap.get(todayDate.format("DD MMMM YYYY")) == [] ) && setTaskMap((map) => {
-    //   return new Map( map.delete(todayDate.format("DD MMMM YYYY")) )
-    // }) )
-    // let getTasks =
-    //   taskMap.get(selectedDate.format("DD MMMM YYYY")) !== undefined
-    //     ? taskMap.get(selectedDate.format("DD MMMM YYYY"))
-    //     : [];
-
-        (taskMap.get(selectedDate.format("DD MMMM YYYY")) === undefined && setTaskMap((map) => {
-          return new Map(map.set(selectedDate.format("DD MMMM YYYY"), []));
-        }) ) 
-    // setTaskMap((map) => {
-    //   return new Map(map.set(selectedDate.format("DD MMMM YYYY"), getTasks));
-    // });
-    // console.log(todayDate.format("DD MMMM YYYY"))
-    // console.log(taskMap)
-    setTodayDate(selectedDate)
-    //console.log(taskMap)
+    setTodayDate(selectedDate);
   }, [selectedDate]);
 
   useEffect(() => {
-    //console.log(TasksList);
     localStorage.setItem("taskmap", JSON.stringify([...taskMap]));
-    // console.log('here')
   }, [taskMap]);
 
   const creatTask = (task) => {
@@ -45,20 +29,16 @@ function ToDo({ selectedDate }) {
       return;
     }
 
-    // taskMap.get(selectedDate.format("DD MMMM YYYY")).push(newTask)
     let temp = [...taskMap.get(selectedDate.format("DD MMMM YYYY")), newTask];
     setTaskMap((map) => {
       return new Map(map.set(selectedDate.format("DD MMMM YYYY"), temp));
     });
-    // setTasksList([...TasksList, newTask]);
 
-    // console.log(taskMap)
     setUserTask("");
   };
 
   const deleteTask = (id) => {
     let currentList = taskMap.get(selectedDate.format("DD MMMM YYYY"));
-    // taskMap.set(selectedDate.format("DD MMMM YYYY"),  currentList.filter((task) => task.id !== id))
     setTaskMap((map) => {
       return new Map(
         map.set(
@@ -70,7 +50,6 @@ function ToDo({ selectedDate }) {
       );
     });
     console.log(taskMap);
-    // setTasksList(tempList);
   };
 
   return (

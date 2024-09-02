@@ -4,7 +4,6 @@ function IconLink() {
   return (
     <div className="bg-white rounded-3xl">
       <div className="flex flex-col items-center justify-center pt-2 pb-2 ">
-       
         <svg
           className="w-6 h-6 text-gray-800 dark:text-white"
           aria-hidden="true"
